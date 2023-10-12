@@ -11,10 +11,10 @@ await Promise.all([
   ...include.map(includeItem =>
     fs.cp(includeItem, destination + `/` + includeItem, {recursive: true})
   ),
-  new Promise(resolve => {
-    let process = child_process.spawn(`tsc`, {stdio: `inherit`});
-    process.addListener(`exit`, resolve);
-  })
+  new Promise(resolve =>
+    child_process.spawn(`tsc`, {stdio: `inherit`})
+                 .on(`exit`, resolve)
+  )
 ]);
 
 })();

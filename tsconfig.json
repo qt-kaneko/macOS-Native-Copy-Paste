@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "strict": true,
+    "target": "ESNext",
+    "module": "CommonJS",
+    "checkJs": true,
+
+    "rootDir": "src",
+    "outDir": "dist",
+
+    "sourceMap": true,
+
+    "incremental": true
+  },
+  "exclude": ["dist", "node_modules", "build.js"]
+}

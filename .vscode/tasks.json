@@ -1,0 +1,25 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Build",
+      "type": "process",
+      "command": "npm",
+      "args": ["run", "build"],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "presentation": {"reveal": "silent"}
+    },
+    {
+      "label": "Publish",
+      "dependsOn": "Build",
+      "type": "process",
+      "command": "vsce",
+      "args": ["package", "-o", "..", "--allow-star-activation"],
+      "options": {"cwd": "dist"},
+      "problemMatcher": []
+    }
+  ]
+}

@@ -7,6 +7,18 @@ import * as cp from "child_process";
 const INCLUDE = [`package.json`, `LICENSE.txt`, `README.md`, `assets/icon.png`];
 const DESTINATION = `dist`;
 
+if (!fs.existsSync(`package.json`))
+{
+  console.error(`'package.json' was not found, are you running from correct directory?`);
+  process.exit(1);
+}
+if (fs.existsSync(DESTINATION) && !fs.readdirSync(DESTINATION).some(name => name.endsWith(`.js`)))
+{
+  console.error(`No .js files found in '${DESTINATION}', is destination specified correctly?\n` +
+                `Remove '${DESTINATION}' manually if you are sure that this is correct behaviour.`);
+  process.exit(1);
+}
+
 let isRelease = process.argv.includes(`release`);
 
 if (!fs.existsSync(`node_modules`))

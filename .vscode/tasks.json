@@ -24,7 +24,7 @@
       "dependsOn": "Build Release",
       "type": "process",
       "command": "vsce",
-      "args": ["package", "-o", "../dist", "--allow-star-activation"],
+      "args": ["package", "--allow-star-activation"],
       "options": {"cwd": "dist"},
       "problemMatcher": []
     }

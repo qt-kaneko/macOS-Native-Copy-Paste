@@ -6,15 +6,22 @@
       "type": "process",
       "command": "npm",
       "args": ["run", "build"],
-      "group": {
-        "kind": "build",
-        "isDefault": true
-      },
-      "presentation": {"reveal": "silent"}
+      "group": {"kind": "build", "isDefault": true},
+      "presentation": {"reveal": "silent"},
+      "problemMatcher": []
     },
     {
+      "label": "Build Release",
+      "type": "process",
+      "command": "npm",
+      "args": ["run", "build", "release"],
+      "presentation": {"reveal": "silent"},
+      "problemMatcher": []
+    },
+
+    {
       "label": "Publish",
-      "dependsOn": "Build",
+      "dependsOn": "Build Release",
       "type": "process",
       "command": "vsce",
       "args": ["package", "-o", "..", "--allow-star-activation"],

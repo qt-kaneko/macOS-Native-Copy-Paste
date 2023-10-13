@@ -6,7 +6,7 @@
   "author": "Kaneko Qt",
 	"description": "Support for macOS native copy/paste (a.k.a. Finder integration).",
 	"version": "1.2.0",
-  "icon": "ICON.png",
+  "icon": "assets/icon.png",
   "categories": ["Other"],
   "license": "SEE LICENSE IN LICENSE",
   "repository": {

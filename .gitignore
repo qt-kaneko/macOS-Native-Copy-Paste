@@ -1,6 +1,3 @@
-# VSCode extension
-*.vsix
-
 # Logs
 logs
 *.log

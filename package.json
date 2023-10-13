@@ -5,10 +5,10 @@
 
   "author": "Kaneko Qt",
 	"description": "Support for macOS native copy/paste (a.k.a. Finder integration).",
-	"version": "1.2.0",
+	"version": "1.2.1",
   "icon": "assets/icon.png",
   "categories": ["Other"],
-  "license": "SEE LICENSE IN LICENSE",
+  "license": "SEE LICENSE IN LICENSE.txt",
   "repository": {
     "type": "git",
     "url": "https://github.com/qt-kaneko/macOS-Native-Copy-Paste.git"
@@ -37,9 +37,5 @@
         "when": "filesExplorerFocus && foldersViewVisible && !explorerResourceReadonly && !inputFocus"
       }
     ]
-  },
-
-  "scripts": {
-    "build": "node build.js"
   }
 }

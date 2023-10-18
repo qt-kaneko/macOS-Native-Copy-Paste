@@ -6,7 +6,7 @@
       "type": "process",
       "command": "node",
       "args": ["build.mjs"],
-      "group": {"kind": "build", "isDefault": true},
+      "group": {"kind": "build"},
       "presentation": {"reveal": "silent"},
       "problemMatcher": []
     },
@@ -14,7 +14,8 @@
       "label": "Build Release",
       "type": "process",
       "command": "node",
-      "args": ["build.mjs", "release"],
+      "args": ["build.mjs", "--release"],
+      "group": {"kind": "build"},
       "presentation": {"reveal": "silent"},
       "problemMatcher": []
     },

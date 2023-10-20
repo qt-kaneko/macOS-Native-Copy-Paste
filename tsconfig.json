@@ -8,7 +8,6 @@
     "outDir": "dist",
 
     "sourceMap": true,
-
     "incremental": true
   },
   "include": ["src"]

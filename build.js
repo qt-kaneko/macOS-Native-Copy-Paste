@@ -1,4 +1,3 @@
-// @ts-check
 const CONFIG = {
   destination: `dist`,
   includes: [`package.json`, `LICENSE.txt`, `README.md`, `assets/icon.png`]

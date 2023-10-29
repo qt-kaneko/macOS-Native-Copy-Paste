@@ -8,24 +8,39 @@ export async function activate({subscriptions}: vsc.ExtensionContext)
   let copyFile = vsc.commands.registerCommand(`macos-native-copy-paste.copyFile`, async () => {
     if (process.platform !== `darwin`)
     {
-      vsc.commands.executeCommand(`fileExplorer.copy`);
+      await vsc.commands.executeCommand(`filesExplorer.copy`);
       return;
     }
 
     await vsc.commands.executeCommand(`copyFilePath`);
+    let selection = await vsc.env.clipboard.readText();
+    if (selection.split(/[\r\n]/, 2).length > 1)
+    {
+      // ISSUE: Multiple files copy is not supported yet, fallback to default VSCodes copy implementation
+      await vsc.commands.executeCommand(`filesExplorer.copy`);
+      return;
+    }
 
     cp.execSync(`osascript -e 'set the clipboard to (the clipboard as «class furl»)'`);
   });
   subscriptions.push(copyFile);
 
   let pasteFile = vsc.commands.registerCommand(`macos-native-copy-paste.pasteFile`, async () => {
+    if (vsc.workspace.workspaceFolders == null) return;
+
     if (process.platform !== `darwin`)
     {
-      vsc.commands.executeCommand(`fileExplorer.paste`);
+      await vsc.commands.executeCommand(`filesExplorer.paste`);
       return;
     }
 
-    if (vsc.workspace.workspaceFolders == null) return;
+    let previousClipboard = await vsc.env.clipboard.readText();
+    if (previousClipboard === ``)
+    {
+      // When clipboard contains VSCodes file, it returns ''
+      await vsc.commands.executeCommand(`filesExplorer.paste`);
+      return;
+    }
 
     let containsFile = cp.execSync(`osascript -e '((clipboard info) as string) contains "«class furl»"'`)
                          .toString()
@@ -36,8 +51,6 @@ export async function activate({subscriptions}: vsc.ExtensionContext)
                            .toString()
                            .trimEnd()
     let targetPath = new PathBuilder(targetFullPath.replace(/\/$/, ``));
-
-    let previousClipboard = await vsc.env.clipboard.readText();
 
     await vsc.commands.executeCommand(`copyFilePath`);
     let currentClipboard = await vsc.env.clipboard.readText();

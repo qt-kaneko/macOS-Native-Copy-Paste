@@ -21,7 +21,7 @@ export async function activate({subscriptions}: vsc.ExtensionContext)
       return;
     }
 
-    cp.execSync(`osascript -e 'set the clipboard to (the clipboard as «class furl»)'`);
+    cp.execSync(`osascript -e 'set the clipboard to ("${selection}" as «class furl»)'`);
   });
   subscriptions.push(copyFile);
 
@@ -34,18 +34,21 @@ export async function activate({subscriptions}: vsc.ExtensionContext)
       return;
     }
 
-    let previousClipboard = await vsc.env.clipboard.readText();
-    if (previousClipboard === ``)
-    {
-      // When clipboard contains VSCodes file, it returns ''
-      await vsc.commands.executeCommand(`filesExplorer.paste`);
-      return;
-    }
+    let clipboard = await vsc.env.clipboard.readText();
 
     let containsFile = cp.execSync(`osascript -e '((clipboard info) as string) contains "«class furl»"'`)
                          .toString()
                          .trimEnd();
-    if (containsFile === `false`) return;
+    if (containsFile === `false`)
+    {
+      if (clipboard === ``)
+      {
+        // When clipboard contains VSCodes file, it returns '' (multiple files "support" crutch)
+        await vsc.commands.executeCommand(`filesExplorer.paste`);
+      }
+
+      return;
+    }
 
     let targetFullPath = cp.execSync(`osascript -e 'POSIX path of (the clipboard as «class furl»)'`)
                            .toString()
@@ -53,10 +56,10 @@ export async function activate({subscriptions}: vsc.ExtensionContext)
     let targetPath = new PathBuilder(targetFullPath.replace(/\/$/, ``));
 
     await vsc.commands.executeCommand(`copyFilePath`);
-    let currentClipboard = await vsc.env.clipboard.readText();
+    let copyFilePathResult = await vsc.env.clipboard.readText();
 
-    let selection = previousClipboard !== currentClipboard // If workspace root is selected, clipboard content doesn't change
-                  ? vsc.Uri.parse(currentClipboard)
+    let selection = clipboard !== copyFilePathResult // If workspace root is selected, clipboard content doesn't change
+                  ? vsc.Uri.parse(copyFilePathResult)
                   : vsc.workspace.workspaceFolders[0].uri;
 
     let directory = (await vsc.workspace.fs.stat(selection)).type === vsc.FileType.File

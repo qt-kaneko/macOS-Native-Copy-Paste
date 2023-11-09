@@ -23,7 +23,15 @@ async function build(config) {
         console.log(`  Nothing to include ¯\\_(ツ)_/¯`);
     else {
         console.log(`  Copying includes -> ${config.destination}`);
-        tasks.push(...includes.map(include => fsp.cp(include, config.destination + `/` + include, { recursive: true })));
+        tasks.push(...includes.map(include => {
+            let source;
+            let destination;
+            if (typeof include === `string`)
+                source = destination = include;
+            else
+                [source, destination] = [include[0], include[1]];
+            return fsp.cp(source, config.destination + `/` + destination, { recursive: true });
+        }));
     }
     if (config.typescript) {
         console.log(`  Compiling...`);
@@ -39,6 +47,16 @@ async function build(config) {
         }
         else
             throw e;
+    }
+    let outFile = config.tsconfig[`compilerOptions`]?.[`outFile`];
+    if (config.main && config.typescript && outFile != null) {
+        const mainInvoke = `\nif (typeof main === "function") main(); // Build.js auto-generated`;
+        let content = await fsp.readFile(outFile);
+        let contentString = content.toString();
+        if (!contentString.includes(mainInvoke)) {
+            contentString += mainInvoke;
+            await fsp.writeFile(outFile, contentString);
+        }
     }
     if (tasks.length > 0) {
         config.buildArtifacts = fs.readdirSync(config.destination, { recursive: true })
@@ -78,16 +96,23 @@ async function main() {
             throw new BuildError(`'build.js' was not found in working directory, are you running in correct folder?`);
         }
         if (fs.existsSync(`package.json`)) {
-            let $package = JSON.parse(fs.readFileSync(`package.json`).toString());
-            CONFIG.package = $package;
-            CONFIG.npm = true;
+            CONFIG.npm ??= true;
+            CONFIG.package = JSON.parse(fs.readFileSync(`package.json`).toString());
         }
+        else
+            CONFIG.npm = false;
         let args = process.argv.slice(2);
         CONFIG.options = args.filter(arg => !arg.startsWith(`-`));
         CONFIG.parameters = args.filter(arg => arg.startsWith(`-`));
         CONFIG.configuration = CONFIG.options.at(0);
         CONFIG.release = CONFIG.parameters.includes(`--release`);
-        CONFIG.typescript = fs.existsSync(`tsconfig.json`);
+        if (fs.existsSync(`tsconfig.json`)) {
+            CONFIG.typescript ??= true;
+            CONFIG.tsconfig = JSON.parse(fs.readFileSync(`tsconfig.json`).toString());
+        }
+        else
+            CONFIG.typescript = false;
+        CONFIG.main ??= true;
         console.log(`Building`
             + (CONFIG.configuration != null ? ` configuration '${CONFIG.configuration}'`
                 : ` without configuration`)
@@ -132,9 +157,17 @@ async function postprocess(config) {
         for (let replaced = false;; replaced = false) {
             for (let [key, value] of Object.entries(config.resources)) {
                 let target = `$(` + key.toUpperCase() + `)`;
-                let replacement = value.startsWith(`file://`)
-                    ? (await fsp.readFile(value.slice(`file://`.length))).toString()
-                    : value;
+                let replacement;
+                const filePrefix = `file://`;
+                if (value.startsWith(filePrefix)) {
+                    let filePath = value.slice(filePrefix.length);
+                    let fileReplacement = await fsp.readFile(filePath);
+                    replacement = buffer.isUtf8(fileReplacement)
+                        ? fileReplacement.toString()
+                        : fileReplacement.toString(`base64`);
+                }
+                else
+                    replacement = value;
                 if (!replaced && contentString.includes(target))
                     anyReplaced = replaced = true;
                 contentString = contentString.replaceAll(target, replacement);

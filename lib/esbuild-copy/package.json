@@ -1,0 +1,9 @@
+{
+  "name": "esbuild-copy",
+  "type": "module",
+  "main": "index.js",
+  "dependencies": {
+    "@types/node": "^22.1.0",
+    "esbuild": "^0.23.0"
+  }
+}

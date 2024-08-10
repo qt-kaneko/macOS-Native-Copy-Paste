@@ -22,11 +22,6 @@
         "command": "macos-native-copy-paste.copyFile",
         "mac": "cmd+c",
         "when": "filesExplorerFocus && foldersViewVisible && !explorerResourceIsRoot && !inputFocus"
-      },
-      {
-        "command": "macos-native-copy-paste.pasteFile",
-        "mac": "cmd+v",
-        "when": "filesExplorerFocus && foldersViewVisible && !explorerResourceReadonly && !inputFocus"
       }
     ]
   }

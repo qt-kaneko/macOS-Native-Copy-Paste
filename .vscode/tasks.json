@@ -9,12 +9,24 @@
     {
       "label": "Build",
       "command": "node",
-      "args": ["esbuild.config.mjs"]
+      "args": ["esbuild.config.mjs", "${input:configuration}"]
     },
     {
       "label": "Build & Verify",
       "dependsOn": ["Build", "Verify"],
       "group": "build"
+    }
+  ],
+  "inputs": [
+    {
+      "id": "configuration",
+      "description": "Configuration:",
+      "type": "pickString",
+      "options": [
+        "Debug",
+        "Release"
+      ],
+      "default": "Debug"
     }
   ]
 }

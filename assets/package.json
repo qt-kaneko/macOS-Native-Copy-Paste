@@ -1,0 +1,33 @@
+{
+	"name": "macos-native-copy-paste",
+  "displayName": "macOS Native Copy/Paste",
+  "publisher": "qt-kaneko",
+
+  "author": "Kaneko Qt",
+	"description": "Support for macOS native copy/paste (a.k.a. Finder integration).",
+	"version": "2.0.0",
+  "icon": "icon.png",
+  "categories": ["Other"],
+  "license": "SEE LICENSE IN LICENSE.txt",
+  "repository": {"type": "git", "url": "https://github.com/qt-kaneko/macOS-Native-Copy-Paste.git"},
+  "homepage": "https://github.com/qt-kaneko/macOS-Native-Copy-Paste",
+  "keywords": ["copy", "paste", "macos", "file", "directory"],
+
+	"engines": {"vscode": "^1.74.0"},
+	"activationEvents": ["onStartupFinished"],
+	"main": "./main.js",
+  "contributes": {
+    "keybindings": [
+      {
+        "command": "macos-native-copy-paste.copyFile",
+        "mac": "cmd+c",
+        "when": "filesExplorerFocus && foldersViewVisible && !explorerResourceIsRoot && !inputFocus"
+      },
+      {
+        "command": "macos-native-copy-paste.pasteFile",
+        "mac": "cmd+v",
+        "when": "filesExplorerFocus && foldersViewVisible && !explorerResourceReadonly && !inputFocus"
+      }
+    ]
+  }
+}

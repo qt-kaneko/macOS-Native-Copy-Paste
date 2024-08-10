@@ -1,0 +1,13 @@
+{
+  "configurations": [
+    {
+      "name": "Launch",
+      "preLaunchTask": "Build & Verify",
+      "args": ["--extensionDevelopmentPath=${workspaceFolder}/dist"],
+      "outFiles": ["${workspaceFolder}/dist/**/*.js"],
+      "sourceMaps": true,
+      "request": "launch",
+      "type": "extensionHost"
+    }
+  ]
+}

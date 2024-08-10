@@ -1,0 +1,20 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Verify",
+      "command": "tsc",
+      "problemMatcher": "$tsc"
+    },
+    {
+      "label": "Build",
+      "command": "node",
+      "args": ["esbuild.config.mjs"]
+    },
+    {
+      "label": "Build & Verify",
+      "dependsOn": ["Build", "Verify"],
+      "group": "build"
+    }
+  ]
+}

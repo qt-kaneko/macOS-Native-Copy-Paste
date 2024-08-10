@@ -1,0 +1,12 @@
+{
+  "dependencies": {
+    "@types/node": "^22.1.0",
+    "@types/vscode": "^1.92.0",
+    "jxa": "file:lib/jxa"
+  },
+  "devDependencies": {
+    "esbuild": "^0.23.0",
+    "typescript": "^5.5.4",
+    "esbuild-copy": "file:lib/esbuild-copy"
+  }
+}

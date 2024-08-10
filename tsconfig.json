@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "noEmit": true,
+    "checkJs": true,
+    "strict": true,
+    "noImplicitAny": false,
+
+    "target": "ESNext",
+    "module": "ESNext",
+    "moduleResolution": "Bundler"
+  },
+  "exclude": ["dist"]
+}

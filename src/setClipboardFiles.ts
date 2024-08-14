@@ -3,9 +3,9 @@ import { jxa } from "jxa";
 declare const ObjC: any;
 declare const $: any;
 
-export function setClipboardFiles(files: string[])
+export async function setClipboardFiles(files: string[])
 {
-  jxa([files], (urls: string[]) => {
+  await jxa([files], (urls: string[]) => {
     ObjC.import('AppKit');
 
     let pasteboard = $.NSPasteboard.generalPasteboard;

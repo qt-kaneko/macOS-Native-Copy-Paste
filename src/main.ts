@@ -17,5 +17,5 @@ async function copyFile()
   let paths = selection.split(/[\r\n]/);
   let urls = paths.map(path => url.pathToFileURL(path).href);
 
-  setClipboardFiles(urls);
+  await setClipboardFiles(urls);
 }

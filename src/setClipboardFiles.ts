@@ -1,4 +1,4 @@
-import { jxa } from "jxa";
+import { jxa } from "@qt-kaneko/jxa";
 
 declare const ObjC: any;
 declare const $: any;

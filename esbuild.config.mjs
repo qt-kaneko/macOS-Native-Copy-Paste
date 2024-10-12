@@ -1,5 +1,5 @@
 import * as esbuild from "esbuild";
-import { copy } from "esbuild-copy";
+import { copy } from "@qt-kaneko/esbuild-copy";
 
 let args = process.argv.slice(2);
 let configuration = args[0];

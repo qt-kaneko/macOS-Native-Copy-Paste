@@ -1,7 +1,0 @@
-{
-  "name": "jxa",
-  "main": "index.ts",
-  "dependencies": {
-    "@types/node": "^22.3.0"
-  }
-}
